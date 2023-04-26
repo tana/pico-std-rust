@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "probe-rs-debug",
+            "request": "launch",
+            "name": "probe_rs debug",
+            "cwd": "${workspaceFolder}",
+            "chip": "RP2040",
+            "coreConfigs": [
+                {
+                    "programBinary": "build/pico-std-rust.elf"
+                }
+            ]
+        }
+    ]
+}

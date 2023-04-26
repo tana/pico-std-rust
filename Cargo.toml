@@ -10,7 +10,9 @@ name = "rustcode"
 crate-type = ["staticlib"]
 
 [dependencies]
-panic-abort = "0.3.2"
+embedded-hal = "0.2.7"
+panic-halt = "0.2.0"
+rp2040-hal = "0.8.0"
 
 [profile.dev]
 panic = "abort"
