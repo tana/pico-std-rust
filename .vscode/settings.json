@@ -1,4 +1,8 @@
 {
     "rust-analyzer.cargo.target": "thumbv6m-none-eabi",
-    "rust-analyzer.check.allTargets": false
+    "rust-analyzer.check.allTargets": false,
+    "files.associations": {
+        "task.h": "c",
+        "freertos.h": "c"
+    }
 }

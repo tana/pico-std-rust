@@ -57,7 +57,7 @@
 /* Synchronization Related */
 #define configUSE_MUTEXES                       1
 #define configUSE_RECURSIVE_MUTEXES             1
-#define configUSE_APPLICATION_TASK_TAG          0
+#define configUSE_APPLICATION_TASK_TAG          1
 #define configUSE_COUNTING_SEMAPHORES           1
 #define configQUEUE_REGISTRY_SIZE               8
 #define configUSE_QUEUE_SETS                    1
@@ -71,7 +71,7 @@
 #define configMESSAGE_BUFFER_LENGTH_TYPE        size_t
 
 /* Memory allocation related definitions. */
-#define configSUPPORT_STATIC_ALLOCATION         0
+#define configSUPPORT_STATIC_ALLOCATION         1
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
 #define configTOTAL_HEAP_SIZE                   (128*1024)
 #define configAPPLICATION_ALLOCATED_HEAP        0
@@ -140,6 +140,9 @@ to exclude the API function. */
 /* Added to fix errors */
 #define configSMP_SPINLOCK_0 0
 #define configSMP_SPINLOCK_1 1
+
+/* For FreeRTOS+POSIX */
+#define configUSE_POSIX_ERRNO 1
 
 #endif /* FREERTOS_CONFIG_H */
 
