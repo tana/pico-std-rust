@@ -72,7 +72,7 @@ target_link_libraries(FreeRTOS PUBLIC pico_stdlib pico_multicore hardware_except
 
 add_library(rustcode STATIC IMPORTED)
 add_dependencies(rustcode cargo-build)
-set_target_properties(rustcode PROPERTIES IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/target/thumbv6m-none-eabi/debug/librustcode.a)
+set_target_properties(rustcode PROPERTIES IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/target/thumbv6m-none-espidf-eabi/debug/librustcode.a)
 
 add_executable(pico-std-rust src/freertos_support.c)
 target_link_libraries(pico-std-rust PUBLIC rustcode pico_stdlib FreeRTOS)

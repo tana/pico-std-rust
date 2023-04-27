@@ -1,10 +1,8 @@
-#![no_std]
-
-use panic_halt as _;
-use core::ffi::{c_int, c_char, c_void};
-use rp2040_hal as hal;
-use hal::pac;
-use embedded_hal::digital::v2::OutputPin;
+use std::{thread, time::Duration};
+use core::{ffi::{c_int, c_char, c_void}};
+// use rp2040_hal as hal;
+// use hal::pac;
+// use embedded_hal::digital::v2::OutputPin;
 
 extern {
     fn stdio_init_all() -> bool;
@@ -18,14 +16,13 @@ extern {
         pvParameters: *mut c_void,
         uxPriority: u32,
         pxCreatedTask: *mut c_void) -> i32;
-    fn vTaskDelay(xTicksToDelay: u32);
 }
 
 extern "C" fn blink_task(_: *mut c_void) {
-    let mut pac = pac::Peripherals::take().unwrap();
-    let sio = hal::Sio::new(pac.SIO);
-    let pins = hal::gpio::Pins::new(pac.IO_BANK0, pac.PADS_BANK0, sio.gpio_bank0, &mut pac.RESETS);
-    let mut led_pin = pins.gpio25.into_push_pull_output();
+    // let mut pac = pac::Peripherals::take().unwrap();
+    // let sio = hal::Sio::new(pac.SIO);
+    // let pins = hal::gpio::Pins::new(pac.IO_BANK0, pac.PADS_BANK0, sio.gpio_bank0, &mut pac.RESETS);
+    // let mut led_pin = pins.gpio25.into_push_pull_output();
 
     unsafe {
         // stdio has to be initialized after initializing pins with Rust HAL
@@ -38,20 +35,18 @@ extern "C" fn blink_task(_: *mut c_void) {
     }
 
     loop {
-        led_pin.set_high().unwrap();
-        unsafe { vTaskDelay(500); }
+        // led_pin.set_high().unwrap();
+        thread::sleep(Duration::from_millis(500));
 
-        led_pin.set_low().unwrap();
-        unsafe { vTaskDelay(500); }
+        // led_pin.set_low().unwrap();
+        thread::sleep(Duration::from_millis(500));
     }
 }
 
 extern "C" fn print_task(_: *mut c_void) {
     loop {
-        unsafe {
-            puts("Hello, world\0".as_ptr() as *const c_char);
-            vTaskDelay(1000);
-        }
+        unsafe { puts("Hello, world\0".as_ptr() as *const c_char); }
+        thread::sleep(Duration::from_millis(1000));
     }
 }
 
