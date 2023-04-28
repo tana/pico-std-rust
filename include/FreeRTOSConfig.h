@@ -106,7 +106,7 @@
 /* SMP port only */
 #define configNUM_CORES                         2
 #define configTICK_CORE                         0
-#define configRUN_MULTIPLE_PRIORITIES           0
+#define configRUN_MULTIPLE_PRIORITIES           1
 
 /* RP2040 specific */
 #define configSUPPORT_PICO_SYNC_INTEROP         1
@@ -141,8 +141,7 @@ to exclude the API function. */
 #define configSMP_SPINLOCK_0 0
 #define configSMP_SPINLOCK_1 1
 
-/* For FreeRTOS+POSIX */
-#define configUSE_POSIX_ERRNO 1
+#define configUSE_CORE_AFFINITY 1
 
 #endif /* FREERTOS_CONFIG_H */
 

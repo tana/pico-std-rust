@@ -3,6 +3,18 @@
     "rust-analyzer.check.allTargets": false,
     "files.associations": {
         "task.h": "c",
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "pthread.h": "c",
+        "queue.h": "c",
+        "types.h": "c",
+        "features.h": "c",
+        "_pthreadtypes.h": "c",
+        "sched.h": "c",
+        "string.h": "c",
+        "esp_pthread.h": "c",
+        "cdefs.h": "c",
+        "time.h": "c",
+        "stdatomic.h": "c",
+        "lock.h": "c"
     }
 }

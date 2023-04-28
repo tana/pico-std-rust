@@ -16,6 +16,8 @@ extern {
         pvParameters: *mut c_void,
         uxPriority: u32,
         pxCreatedTask: *mut c_void) -> i32;
+    
+    fn esp_newlib_locks_init();
 }
 
 extern "C" fn blink_task(_: *mut c_void) {
@@ -52,6 +54,8 @@ extern "C" fn print_task(_: *mut c_void) {
 
 #[no_mangle]
 pub extern "C" fn main() {
+    unsafe { esp_newlib_locks_init(); }
+
     unsafe {
         xTaskCreate(
             blink_task, "blink\0".as_ptr() as *const c_char, 1024,
