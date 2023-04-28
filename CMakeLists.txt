@@ -54,6 +54,7 @@ add_executable(pico-std-rust
     esp-idf/src/pthread_rwlock.c
     # Although ESP-IDF pthread has semaphore implementation, we use pico-sdk implementation instead.
     esp-idf/src/locks.c
+    esp-idf/src/stdatomic.c
 )
 target_include_directories(pico-std-rust PUBLIC esp-idf/include)
 target_link_libraries(pico-std-rust PUBLIC rustcode pico_stdlib FreeRTOS)

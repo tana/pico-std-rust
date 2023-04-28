@@ -15,6 +15,8 @@
         "cdefs.h": "c",
         "time.h": "c",
         "stdatomic.h": "c",
-        "lock.h": "c"
+        "lock.h": "c",
+        "cstdlib": "c",
+        "memory": "c"
     }
 }
