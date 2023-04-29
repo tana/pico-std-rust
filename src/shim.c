@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "unwind.h"
-#include "pico/time.h"
+#include "hardware/timer.h"
 
 int usleep(useconds_t us)
 {
-    sleep_us(us);
+    busy_wait_us(us);
     return 0;
 }
 

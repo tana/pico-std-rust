@@ -20,32 +20,7 @@ extern {
     fn esp_newlib_locks_init();
 }
 
-extern "C" fn blink_task(_: *mut c_void) {
-    // let mut pac = pac::Peripherals::take().unwrap();
-    // let sio = hal::Sio::new(pac.SIO);
-    // let pins = hal::gpio::Pins::new(pac.IO_BANK0, pac.PADS_BANK0, sio.gpio_bank0, &mut pac.RESETS);
-    // let mut led_pin = pins.gpio25.into_push_pull_output();
-
-    unsafe {
-        // stdio has to be initialized after initializing pins with Rust HAL
-        stdio_init_all();
-
-
-        xTaskCreate(
-            print_task, "print\0".as_ptr() as *const c_char, 1024,
-            core::ptr::null_mut(), 1, core::ptr::null_mut());
-    }
-
-    loop {
-        // led_pin.set_high().unwrap();
-        thread::sleep(Duration::from_millis(500));
-
-        // led_pin.set_low().unwrap();
-        thread::sleep(Duration::from_millis(500));
-    }
-}
-
-extern "C" fn print_task(_: *mut c_void) {
+extern "C" fn main_task(_: *mut c_void) {
     loop {
         unsafe { puts("Hello, world\0".as_ptr() as *const c_char); }
         thread::sleep(Duration::from_millis(1000));
@@ -54,11 +29,13 @@ extern "C" fn print_task(_: *mut c_void) {
 
 #[no_mangle]
 pub extern "C" fn main() {
-    unsafe { esp_newlib_locks_init(); }
-
     unsafe {
+        esp_newlib_locks_init();
+
+        stdio_init_all();
+
         xTaskCreate(
-            blink_task, "blink\0".as_ptr() as *const c_char, 1024,
+            main_task, "main_task\0".as_ptr() as *const c_char, 1024,
             core::ptr::null_mut(), 2, core::ptr::null_mut());
 
         vTaskStartScheduler();  // Start FreeRTOS task scheduler

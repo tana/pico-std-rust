@@ -137,10 +137,6 @@ to exclude the API function. */
 
 /* A header file that defines trace macro can be included here. */
 
-/* Added to fix errors */
-#define configSMP_SPINLOCK_0 0
-#define configSMP_SPINLOCK_1 1
-
 #define configUSE_CORE_AFFINITY 1
 
 #endif /* FREERTOS_CONFIG_H */

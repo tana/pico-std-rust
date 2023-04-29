@@ -9,7 +9,9 @@
             "chip": "RP2040",
             "coreConfigs": [
                 {
-                    "programBinary": "build/pico-std-rust.elf"
+                    "programBinary": "build/pico-std-rust.elf",
+                    "coreIndex": 0,
+                    "svdFile": "build/_deps/pico_sdk-src/src/rp2040/hardware_regs/rp2040.svd"
                 }
             ]
         }

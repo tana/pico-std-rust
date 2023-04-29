@@ -39,7 +39,8 @@ target_include_directories(FreeRTOS
     PUBLIC ${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include
     PUBLIC include/ # For FreeRTOSConfig.h
 )
-target_link_libraries(FreeRTOS PUBLIC pico_stdlib pico_multicore hardware_exception)
+target_link_libraries(FreeRTOS PUBLIC pico_stdlib pico_multicore hardware_exception hardware_clocks)
+target_compile_definitions(FreeRTOS PUBLIC PICO_CONFIG_RTOS_ADAPTER_HEADER=${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include/freertos_sdk_config.h)
 
 add_library(rustcode STATIC IMPORTED)
 add_dependencies(rustcode cargo-build)

@@ -276,7 +276,9 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
                                  task_arg,
                                  prio,
                                  &xHandle);
-    vTaskCoreAffinitySet(xHandle, 0x1 << core_id);
+    if (core_id != tskNO_AFFINITY) {
+        vTaskCoreAffinitySet(xHandle, 0x1 << core_id);
+    }
 
     if (res != pdPASS) {
         // ESP_LOGE(TAG, "Failed to create task!");
