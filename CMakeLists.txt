@@ -47,6 +47,7 @@ set_target_properties(rustcode PROPERTIES IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE
 
 add_executable(pico-std-rust
     src/freertos_support.c
+    src/shim.c
     
     esp-idf/src/pthread.c
     esp-idf/src/pthread_cond_var.c
