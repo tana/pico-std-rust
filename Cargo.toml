@@ -15,8 +15,8 @@ crate-type = ["staticlib"]
 #panic-abort = "0.3.2"
 #rp2040-hal = "0.8.0"
 
-# [profile.dev]
-# panic = "abort"
+[profile.dev]
+opt-level = "z"
 
-# [profile.release]
-# panic = "abort"
+[profile.release]
+opt-level = "s"
