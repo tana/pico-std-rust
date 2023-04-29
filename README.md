@@ -40,7 +40,12 @@ If you have a SWD debug probe, you can use `cargo flash` for flashing.
 cargo flash --chip RP2040 --elf .\build\pico-std-rust.elf
 ```
 
-Probably drag-and-drop using boot mode will also work.
+Probably, converting ELF to UF2 and drag-and-drop flashing using BOOTSEL will also work.
+
+## TODO
+- [ ] Automatically invoke CMake from Cargo
+- [ ] embedded-hal integration
+- [ ] Networking support for Pico W
 
 ## License
 Portions written by me are licensed under MIT or Apache 2.0 license.
