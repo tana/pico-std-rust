@@ -1,12 +1,11 @@
 use std::{thread, time::Duration};
-use core::{ffi::{c_int, c_char, c_void}};
+use core::{ffi::{c_char, c_void}};
 // use rp2040_hal as hal;
 // use hal::pac;
 // use embedded_hal::digital::v2::OutputPin;
 
 extern {
     fn stdio_init_all() -> bool;
-    fn puts(s: *const c_char) -> c_int;
 
     fn vTaskStartScheduler();
     fn xTaskCreate(
@@ -22,7 +21,7 @@ extern {
 
 extern "C" fn main_task(_: *mut c_void) {
     loop {
-        unsafe { puts("Hello, world\0".as_ptr() as *const c_char); }
+        println!("Hello, world");
         thread::sleep(Duration::from_millis(1000));
     }
 }
