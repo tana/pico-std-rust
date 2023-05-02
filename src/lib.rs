@@ -1,8 +1,5 @@
 use std::{thread, time::Duration};
 use core::{ffi::{c_char, c_void}};
-// use rp2040_hal as hal;
-// use hal::pac;
-// use embedded_hal::digital::v2::OutputPin;
 
 extern {
     fn stdio_init_all() -> bool;
@@ -39,14 +36,4 @@ pub extern "C" fn main() {
 
         vTaskStartScheduler();  // Start FreeRTOS task scheduler
     }
-}
-
-#[no_mangle]
-pub extern "C" fn vApplicationMallocFailedHook() {
-    panic!("malloc failed")
-}
-
-#[no_mangle]
-pub extern "C" fn vApplicationStackOverflowHook() {
-    panic!("stack overflow")
 }

@@ -1,9 +1,20 @@
+#include "pico/runtime.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
 #include "FreeRTOSConfig.h"
 
-/* Adapted from the example in the description of configSUPPORT_STATIC_ALLOCATION https://www.freertos.org/a00110.html */
+void vApplicationMallocFailedHook(void)
+{
+    panic("malloc failed");
+}
+
+void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName)
+{
+    panic("Stack overflow in task %d", pcTaskName);
+}
+
+/* Below are adopted from the example in the description of configSUPPORT_STATIC_ALLOCATION https://www.freertos.org/a00110.html */
 
 /* configSUPPORT_STATIC_ALLOCATION is set to 1, so the application must provide an
 implementation of vApplicationGetIdleTaskMemory() to provide the memory that is
