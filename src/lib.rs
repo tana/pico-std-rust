@@ -1,5 +1,5 @@
-use std::{thread, time::Duration};
-use core::{ffi::{c_char, c_void}};
+use std::{thread, time::Duration, sync::{Mutex, Arc}};
+use core::{ffi::{c_char, c_void, c_int}};
 
 extern {
     fn stdio_init_all() -> bool;
@@ -14,11 +14,35 @@ extern {
         pxCreatedTask: *mut c_void) -> i32;
     
     fn esp_newlib_locks_init();
+    fn esp_pthread_init() -> c_int;
 }
 
 extern "C" fn main_task(_: *mut c_void) {
+    let counter = Arc::new(Mutex::new(0));
+
+    {
+        let counter = Arc::clone(&counter);
+
+        thread::spawn(move || {
+            loop {
+                {
+                    let mut counter = counter.lock().unwrap();
+                    *counter = (*counter + 1) % 100;
+                }
+
+                println!("Another thread {}", *counter.lock().unwrap());
+                thread::sleep(Duration::from_secs(3));
+            }
+        });
+    }
+
     loop {
-        println!("Hello, world");
+        {
+            let mut counter = counter.lock().unwrap();
+            *counter = (*counter + 1) % 100;
+        }
+
+        println!("Main thread {}", *counter.lock().unwrap());
         thread::sleep(Duration::from_millis(1000));
     }
 }
@@ -27,6 +51,7 @@ extern "C" fn main_task(_: *mut c_void) {
 pub extern "C" fn main() {
     unsafe {
         esp_newlib_locks_init();
+        esp_pthread_init();
 
         stdio_init_all();
 
