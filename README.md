@@ -17,7 +17,7 @@ Only tested on Windows 11.
 Two steps are needed for building.
 ### Step 1: Building Rust part
 ```
-cargo build -Z build-std=std,panic_abort --target .\thumbv6m-none-espidf-eabi.json
+cargo build
 ```
 
 It produces a static library `target/thumbv6m-none-espidf-eabi/librustcode.a`.
