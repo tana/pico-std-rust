@@ -20,3 +20,6 @@ opt-level = "z"
 
 [profile.release]
 opt-level = "s"
+
+[build-dependencies]
+cmake = "0.1.50"

@@ -23,7 +23,7 @@ if(NOT freertos_kernel_POPULATED)
     FetchContent_Populate(freertos_kernel)
 endif()
 
-add_library(FreeRTOS STATIC
+add_library(FreeRTOS INTERFACE
     ${freertos_kernel_SOURCE_DIR}/croutine.c
     ${freertos_kernel_SOURCE_DIR}/event_groups.c
     ${freertos_kernel_SOURCE_DIR}/list.c
@@ -35,18 +35,18 @@ add_library(FreeRTOS STATIC
     ${freertos_kernel_SOURCE_DIR}/portable/MemMang/heap_4.c
 )
 target_include_directories(FreeRTOS
-    PUBLIC ${freertos_kernel_SOURCE_DIR}/include
-    PUBLIC ${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include
-    PUBLIC include/ # For FreeRTOSConfig.h
+    INTERFACE ${freertos_kernel_SOURCE_DIR}/include
+    INTERFACE ${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include
+    INTERFACE include/ # For FreeRTOSConfig.h
 )
-target_link_libraries(FreeRTOS PUBLIC pico_stdlib pico_multicore hardware_exception hardware_clocks)
-target_compile_definitions(FreeRTOS PUBLIC PICO_CONFIG_RTOS_ADAPTER_HEADER=${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include/freertos_sdk_config.h)
+target_link_libraries(FreeRTOS INTERFACE pico_stdlib pico_multicore hardware_exception hardware_clocks)
+target_compile_definitions(FreeRTOS INTERFACE PICO_CONFIG_RTOS_ADAPTER_HEADER=${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include/freertos_sdk_config.h)
 
 add_library(rustcode STATIC IMPORTED)
 add_dependencies(rustcode cargo-build)
 set_target_properties(rustcode PROPERTIES IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/target/thumbv6m-none-espidf-eabi/debug/librustcode.a)
 
-add_executable(pico-std-rust
+add_library(pico-std-rust-c STATIC
     src/freertos_support.c
     src/shim.c
     
@@ -58,9 +58,9 @@ add_executable(pico-std-rust
     esp-idf/src/locks.c
     esp-idf/src/stdatomic.c
 )
-target_include_directories(pico-std-rust PUBLIC esp-idf/include)
-target_link_libraries(pico-std-rust PUBLIC rustcode pico_stdlib FreeRTOS)
-target_compile_definitions(pico-std-rust PUBLIC
+target_include_directories(pico-std-rust-c PUBLIC esp-idf/include)
+target_link_libraries(pico-std-rust-c PUBLIC rustcode pico_stdlib FreeRTOS)
+target_compile_definitions(pico-std-rust-c PUBLIC
     _POSIX_THREADS _POSIX_BARRIERS _POSIX_READER_WRITER_LOCKS _UNIX98_THREAD_MUTEX_ATTRIBUTES
 
     CONFIG_PTHREAD_STACK_MIN=256
@@ -70,4 +70,4 @@ target_compile_definitions(pico-std-rust PUBLIC
     CONFIG_PTHREAD_TASK_NAME_DEFAULT="task"
 )
 
-#pico_add_extra_outputs(pico-std-rust)
+install()
