@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.19)
 
 include(FetchContent)
 
-set(Rust_CARGO_TARGET "thumbv6m-none-eabi")
-
 # Automatically download Pico SDK
 set(PICO_SDK_FETCH_FROM_GIT on)
+set(PICO_SDK_FETCH_FROM_GIT_PATH "${CMAKE_BINARY_DIR}")    # This is IMPORTANT. Without this, sometimes uncommitted changes will be destroyed.
 include(pico_sdk_import.cmake)
 
 project(pico-std-rust)
@@ -42,10 +41,6 @@ target_include_directories(FreeRTOS
 target_link_libraries(FreeRTOS INTERFACE pico_stdlib pico_multicore hardware_exception hardware_clocks)
 target_compile_definitions(FreeRTOS INTERFACE PICO_CONFIG_RTOS_ADAPTER_HEADER=${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include/freertos_sdk_config.h)
 
-add_library(rustcode STATIC IMPORTED)
-add_dependencies(rustcode cargo-build)
-set_target_properties(rustcode PROPERTIES IMPORTED_LOCATION_DEBUG ${CMAKE_SOURCE_DIR}/target/thumbv6m-none-espidf-eabi/debug/librustcode.a)
-
 add_library(pico-std-rust-c STATIC
     src/freertos_support.c
     src/shim.c
@@ -59,7 +54,7 @@ add_library(pico-std-rust-c STATIC
     esp-idf/src/stdatomic.c
 )
 target_include_directories(pico-std-rust-c PUBLIC esp-idf/include)
-target_link_libraries(pico-std-rust-c PUBLIC rustcode pico_stdlib FreeRTOS)
+target_link_libraries(pico-std-rust-c PUBLIC pico_stdlib FreeRTOS)
 target_compile_definitions(pico-std-rust-c PUBLIC
     _POSIX_THREADS _POSIX_BARRIERS _POSIX_READER_WRITER_LOCKS _UNIX98_THREAD_MUTEX_ATTRIBUTES
 
@@ -70,4 +65,4 @@ target_compile_definitions(pico-std-rust-c PUBLIC
     CONFIG_PTHREAD_TASK_NAME_DEFAULT="task"
 )
 
-install()
+install(TARGETS pico-std-rust-c DESTINATION lib)
