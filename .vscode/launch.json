@@ -2,7 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "preLaunchTask": "CMake: build",
             "type": "probe-rs-debug",
             "request": "launch",
             "name": "probe_rs debug",
@@ -15,9 +14,8 @@
             },
             "coreConfigs": [
                 {
-                    "programBinary": "build/pico-std-rust.elf",
-                    "coreIndex": 0,
-                    "svdFile": "build/_deps/pico_sdk-src/src/rp2040/hardware_regs/rp2040.svd"
+                    "programBinary": "pico-std-rust",
+                    "coreIndex": 0
                 }
             ]
         }

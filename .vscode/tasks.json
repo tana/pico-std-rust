@@ -7,23 +7,11 @@
 			"problemMatcher": [
 				"$rustc"
 			],
-			"group": "build",
-			"label": "rust: cargo build"
-		},
-		{
-			"type": "cmake",
-			"label": "CMake: build",
-			"command": "build",
-			"targets": [
-				"all"
-			],
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
-			"problemMatcher": [],
-			"detail": "CMake template build task",
-			"dependsOn": ["rust: cargo build"]
+			"label": "rust: cargo build"
 		}
 	]
 }
