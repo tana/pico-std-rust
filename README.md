@@ -11,39 +11,28 @@ Only tested on Windows 11.
 - `rust-src`
 - GNU Arm Embedded Toolchain (which includes GCC and Newlib for `arm-none-eabi`)
 - CMake
-- Ninja (probably GNU Make will also work)
+- Ninja
+- ldproxy (can be installed by `cargo install ldproxy`)
 
 ## Building and flashing
-Two steps are needed for building.
-### Step 1: Building Rust part
+### Building
+Only the following command line is required for build.
+It produces an ELF file `pico-std-rust` in `target/thumbv6m-none-espidf-eabi/debug/` directory.
 ```
 cargo build
 ```
 
-It produces a static library `target/thumbv6m-none-espidf-eabi/librustcode.a`.
-
-### Step 2: Building C part, including Pico SDK and FreeRTOS
-```
-mkdir build
-cd build/
-cmake ..
-ninja
-cd ..
-```
-
-It produces an ELF file `build/pico-std-rust.elf`.
-Pico SDK and FreeRTOS source code are automatically downloaded by CMake.
+Pico SDK and FreeRTOS source code are automatically downloaded during build.
 
 ### Step 3: Flashing binary on Raspberry Pi Pico
-If you have a SWD debug probe, you can use `cargo flash` for flashing.
+If you have a SWD debug probe, you can use `probe-rs-cli` for flashing.
 ```
-cargo flash --chip RP2040 --elf .\build\pico-std-rust.elf
+probe-rs-cli download /target/thumbv6m-none-espidf-eabi\debug\pico-std-rust --chip RP2040
 ```
 
 Probably, converting ELF to UF2 and drag-and-drop flashing using BOOTSEL will also work.
 
 ## TODO
-- [ ] Automatically invoke CMake from Cargo
 - [ ] embedded-hal integration
 - [ ] Networking support for Pico W
 
