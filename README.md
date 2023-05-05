@@ -27,7 +27,7 @@ Pico SDK and FreeRTOS source code are automatically downloaded during build.
 ### Step 3: Flashing binary on Raspberry Pi Pico
 If you have a SWD debug probe, you can use `probe-rs-cli` for flashing.
 ```
-probe-rs-cli download /target/thumbv6m-none-espidf-eabi\debug\pico-std-rust --chip RP2040
+probe-rs-cli download target/thumbv6m-none-espidf-eabi/debug/pico-std-rust --chip RP2040
 ```
 
 Probably, converting ELF to UF2 and drag-and-drop flashing using BOOTSEL will also work.
