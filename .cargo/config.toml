@@ -1,5 +1,9 @@
 [build]
 target = "./thumbv6m-none-espidf-eabi.json"
 
+[target.thumbv6m-none-espidf-eabi]
+linker = "ldproxy"
+rustflags = ["-C", "default-linker-libraries=yes"]
+
 [unstable]
 build-std = ["std", "panic_abort"]

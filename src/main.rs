@@ -1,3 +1,5 @@
+#![no_main]
+
 use std::{thread, time::Duration, sync::{Mutex, Arc}};
 use core::{ffi::{c_char, c_void, c_int}};
 

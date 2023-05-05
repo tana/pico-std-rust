@@ -5,9 +5,6 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[lib]
-crate-type = ["staticlib"]
-
 [dependencies]
 #embedded-hal = "0.2.7"
 #panic-halt = "0.2.0"
@@ -22,3 +19,4 @@ opt-level = "s"
 
 [build-dependencies]
 cmake = "0.1.50"
+embuild = { version = "0.31.1", features = ["cmake"] }

@@ -22,7 +22,7 @@ if(NOT freertos_kernel_POPULATED)
     FetchContent_Populate(freertos_kernel)
 endif()
 
-add_library(FreeRTOS INTERFACE
+add_library(FreeRTOS STATIC
     ${freertos_kernel_SOURCE_DIR}/croutine.c
     ${freertos_kernel_SOURCE_DIR}/event_groups.c
     ${freertos_kernel_SOURCE_DIR}/list.c
@@ -32,17 +32,18 @@ add_library(FreeRTOS INTERFACE
     ${freertos_kernel_SOURCE_DIR}/timers.c
     ${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/port.c
     ${freertos_kernel_SOURCE_DIR}/portable/MemMang/heap_4.c
+
+    src/freertos_support.c
 )
 target_include_directories(FreeRTOS
-    INTERFACE ${freertos_kernel_SOURCE_DIR}/include
-    INTERFACE ${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include
-    INTERFACE include/ # For FreeRTOSConfig.h
+    PUBLIC ${freertos_kernel_SOURCE_DIR}/include
+    PUBLIC ${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include
+    PUBLIC include/ # For FreeRTOSConfig.h
 )
-target_link_libraries(FreeRTOS INTERFACE pico_stdlib pico_multicore hardware_exception hardware_clocks)
-target_compile_definitions(FreeRTOS INTERFACE PICO_CONFIG_RTOS_ADAPTER_HEADER=${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include/freertos_sdk_config.h)
+target_link_libraries(FreeRTOS PUBLIC pico_stdlib pico_multicore hardware_exception hardware_clocks)
+target_compile_definitions(FreeRTOS PUBLIC PICO_CONFIG_RTOS_ADAPTER_HEADER=${freertos_kernel_SOURCE_DIR}/portable/ThirdParty/GCC/RP2040/include/freertos_sdk_config.h)
 
 add_library(pico-std-rust-c STATIC
-    src/freertos_support.c
     src/shim.c
     
     esp-idf/src/pthread.c
@@ -65,4 +66,6 @@ target_compile_definitions(pico-std-rust-c PUBLIC
     CONFIG_PTHREAD_TASK_NAME_DEFAULT="task"
 )
 
-install(TARGETS pico-std-rust-c DESTINATION lib)
+# Create an executable with empty main function for retrieving linker flags
+add_executable(exe src/empty_main.c)
+target_link_libraries(exe pico-std-rust-c)
