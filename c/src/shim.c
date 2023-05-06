@@ -2,11 +2,22 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "unwind.h"
+#include "pico/time.h"
 #include "hardware/timer.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 int usleep(useconds_t us)
 {
-    busy_wait_us(us);
+    absolute_time_t start_time = get_absolute_time();
+
+    TickType_t ticks = us / (1000 * portTICK_PERIOD_MS);
+    absolute_time_t end_time = delayed_by_us(start_time, us - 1000 * portTICK_PERIOD_MS * ticks);
+
+    vTaskDelay(ticks);
+    
+    busy_wait_until(end_time);
+
     return 0;
 }
 
