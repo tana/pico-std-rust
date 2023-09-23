@@ -1,4 +1,5 @@
 {
     "rust-analyzer.check.extraArgs": ["-Z", "build-std=std,panic_abort", "--target", "./thumbv6m-none-espidf-eabi.json"],
-    "rust-analyzer.check.allTargets": false
+    "rust-analyzer.check.allTargets": false,
+    "dotnet.defaultSolution": "disable"
 }
