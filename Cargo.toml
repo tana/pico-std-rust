@@ -5,6 +5,12 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = ["stdio-uart"]
+stdio-uart = []
+stdio-usb = []
+stdio-semihosting = []
+
 [dependencies]
 embedded-hal = "0.2.7"
 # Intrinsics (e.g. floating point math) are already provided by Pico SDK

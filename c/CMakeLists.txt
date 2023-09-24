@@ -66,6 +66,28 @@ target_compile_definitions(pico-std-rust-c PUBLIC
     CONFIG_PTHREAD_TASK_NAME_DEFAULT="task"
 )
 
+# Enable stdio drivers specified by cargo features
+# (environment variables are inherited from build.rs)
+
+if(DEFINED ENV{CARGO_FEATURE_STDIO_UART})
+    pico_enable_stdio_uart(pico-std-rust-c 1)
+else()
+    pico_enable_stdio_uart(pico-std-rust-c 0)
+endif()
+
+# TODO: It seems currently it does not work with FreeRTOS https://www.eevblog.com/forum/microcontrollers/rp2040-how-to-use-freertos-with-tinyusb/
+# if(DEFINED ENV{CARGO_FEATURE_STDIO_USB})
+#     pico_enable_stdio_usb(pico-std-rust-c 1)
+# else()
+#     pico_enable_stdio_usb(pico-std-rust-c 0)
+# endif()
+
+if(DEFINED ENV{CARGO_FEATURE_STDIO_SEMIHOSTING})
+    pico_enable_stdio_semihosting(pico-std-rust-c 1)
+else()
+    pico_enable_stdio_semihosting(pico-std-rust-c 0)
+endif()
+
 # Create an executable with empty main function for retrieving linker flags
 add_executable(exe src/empty_main.c)
 target_link_libraries(exe pico-std-rust-c)
