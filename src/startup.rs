@@ -15,6 +15,8 @@ extern "C" {
     fn esp_newlib_locks_init();
     fn esp_pthread_init() -> c_int;
 
+    fn stdio_init_all() -> bool;
+
     fn __real_main(argc: c_int, argv: *const *const c_void) -> c_int;
 }
 
@@ -33,6 +35,8 @@ extern "C" fn __wrap_main() {
     );
 
     unsafe {
+        stdio_init_all();
+
         esp_newlib_locks_init();
         esp_pthread_init();
 

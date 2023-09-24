@@ -1,5 +1,5 @@
 [package]
-name = "pico-std-rust"
+name = "pico-std"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,7 +8,8 @@ edition = "2021"
 [features]
 default = ["stdio-uart"]
 stdio-uart = []
-stdio-usb = []
+# Currently, stdio-usb driver does not work
+# stdio-usb = []
 stdio-semihosting = []
 
 [dependencies]
@@ -29,3 +30,11 @@ embuild = { version = "0.31.1", features = ["cmake"] }
 [patch.crates-io]
 # Last revision where cortex_m::interrupt::free() still takes one-argument function but no preassembled binary is used
 cortex-m = { git = "https://github.com/rust-embedded/cortex-m.git", rev = "e46e2310adc86a5a09a1858a23ecdde2a2c6963f" }
+
+[[example]]
+name = "blinky"
+crate-type = ["bin"]
+
+[[example]]
+name = "threads"
+crate-type = ["bin"]
