@@ -1,17 +1,17 @@
 use std::{thread, time::Duration, sync::{Mutex, Arc}};
 use rp2040_hal as hal;
-use hal::{pac as pac, Sio};
 use embedded_hal::digital::v2::OutputPin;
 
 mod startup;
+mod peripherals;
 
 extern "C" {
     fn stdio_init_all() -> bool;
 }
 
 fn main() {
-    let mut peripherals = pac::Peripherals::take().unwrap();
-    let sio = Sio::new(peripherals.SIO);
+    let mut peripherals = peripherals::Peripherals::take().unwrap();
+    let sio = peripherals::Sio::take().unwrap();
     let pins = hal::gpio::Pins::new(
         peripherals.IO_BANK0,
         peripherals.PADS_BANK0,

@@ -1,4 +1,6 @@
 use core::ffi::{c_char, c_void, c_int};
+use rp2040_hal as hal;
+use hal::pac;
 
 extern "C" {
     fn vTaskStartScheduler();
@@ -26,6 +28,10 @@ extern "C" fn main_task_wrapper(_parameters: *mut c_void) {
 // because of "-Wl,--wrap=main" compiler flag.
 #[no_mangle]
 extern "C" fn __wrap_main() {
+    let (_sys_peripherals, _sys_sio) = super::peripherals::init(
+        pac::Peripherals::take().unwrap()
+    );
+
     unsafe {
         esp_newlib_locks_init();
         esp_pthread_init();

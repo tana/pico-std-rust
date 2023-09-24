@@ -14,7 +14,7 @@ stdio-semihosting = []
 [dependencies]
 embedded-hal = "0.2.7"
 # Intrinsics (e.g. floating point math) are already provided by Pico SDK
-rp2040-hal = { version = "0.8.0", features = ["disable-intrinsics"]}
+rp2040-hal = { version = "0.8.0", features = ["disable-intrinsics"] }
 
 [profile.dev]
 opt-level = "z"
