@@ -42,4 +42,7 @@ fn main() {
         .build()
         .unwrap();
     link_args.output();
+
+    // Wrap main function with initialization routine
+    println!("cargo:rustc-link-arg=-Wl,--wrap=main");
 }

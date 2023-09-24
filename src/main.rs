@@ -1,5 +1,3 @@
-#![no_main]
-
 use std::{thread, time::Duration, sync::{Mutex, Arc}};
 use rp2040_hal as hal;
 use hal::{pac as pac, Sio};
@@ -7,11 +5,11 @@ use embedded_hal::digital::v2::OutputPin;
 
 mod startup;
 
-extern {
+extern "C" {
     fn stdio_init_all() -> bool;
 }
 
-fn main_task() {
+fn main() {
     let mut peripherals = pac::Peripherals::take().unwrap();
     let sio = Sio::new(peripherals.SIO);
     let pins = hal::gpio::Pins::new(
@@ -66,9 +64,4 @@ fn main_task() {
         println!("Main thread {}", *counter.lock().unwrap());
         thread::sleep(Duration::from_millis(1000));
     }
-}
-
-#[no_mangle]
-extern "C" fn main() {
-    startup::start_main_task(main_task);
 }

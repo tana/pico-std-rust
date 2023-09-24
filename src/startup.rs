@@ -1,6 +1,6 @@
 use core::ffi::{c_char, c_void, c_int};
 
-extern {
+extern "C" {
     fn vTaskStartScheduler();
     fn xTaskCreate(
         pvTaskCode: extern "C" fn(*mut c_void),
@@ -12,20 +12,27 @@ extern {
     
     fn esp_newlib_locks_init();
     fn esp_pthread_init() -> c_int;
+
+    fn __real_main(argc: c_int, argv: *const *const c_void) -> c_int;
 }
 
-extern "C" fn main_task_wrapper(parameters: *mut c_void) {
-    unsafe { std::mem::transmute::<*mut c_void, fn()>(parameters)(); }
+extern "C" fn main_task_wrapper(_parameters: *mut c_void) {
+    unsafe {
+        __real_main(0, core::ptr::null_mut());
+    }
 }
 
-pub fn start_main_task(main_task_fn: fn()) {
+// This function is called by the CRT startup routine in place of C main function,
+// because of "-Wl,--wrap=main" compiler flag.
+#[no_mangle]
+extern "C" fn __wrap_main() {
     unsafe {
         esp_newlib_locks_init();
         esp_pthread_init();
 
         xTaskCreate(
             main_task_wrapper, "main_task\0".as_ptr() as *const c_char, 1024,
-            main_task_fn as *mut c_void, 2, core::ptr::null_mut());
+            core::ptr::null_mut() as *mut c_void, 2, core::ptr::null_mut());
 
         vTaskStartScheduler();  // Start FreeRTOS task scheduler
     }
