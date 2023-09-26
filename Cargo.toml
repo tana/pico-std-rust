@@ -11,6 +11,7 @@ stdio-uart = []
 # Currently, stdio-usb driver does not work
 # stdio-usb = []
 stdio-semihosting = []
+wifi = []
 
 [dependencies]
 embedded-hal = "0.2.7"
@@ -38,3 +39,8 @@ crate-type = ["bin"]
 [[example]]
 name = "threads"
 crate-type = ["bin"]
+
+[[example]]
+name = "blinky_pico_w"
+crate-type = ["bin"]
+required-features = ["wifi"]

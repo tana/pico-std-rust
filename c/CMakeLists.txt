@@ -88,6 +88,11 @@ else()
     pico_enable_stdio_semihosting(pico-std-rust-c 0)
 endif()
 
+if(DEFINED ENV{CARGO_FEATURE_WIFI})
+    # Reference: Raspberry Pi Pico example picow_freertos_iperf_server_sys https://github.com/raspberrypi/pico-examples/blob/eca13acf57916a0bd5961028314006983894fc84/pico_w/wifi/freertos/ping/CMakeLists.txt#L23-L45
+    target_link_libraries(pico-std-rust-c PUBLIC pico_cyw43_arch_lwip_sys_freertos)
+endif()
+
 # Create an executable with empty main function for retrieving linker flags
 add_executable(exe src/empty_main.c)
 target_link_libraries(exe pico-std-rust-c)

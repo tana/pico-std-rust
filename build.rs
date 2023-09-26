@@ -1,11 +1,17 @@
 // Build procedure is based on esp-idf-sys: https://github.com/esp-rs/esp-idf-sys/blob/155299bde700905fd2ddb040d7a13fb73559ac68/build/native/cargo_driver.rs
 
+use std::env;
 use embuild::build::LinkArgsBuilder;
 use embuild::cargo;
 use embuild::cmake::file_api::{ObjKind, Query};
 use embuild::cmake::Config;
 
 fn main() {
+    if env::var("CARGO_FEATURE_WIFI").is_ok() {
+        // WiFi support requires PICO_BOARD setting
+        env::set_var("PICO_BOARD", "pico_w")
+    }
+
     let cmake_build_dir = cargo::out_dir().join("build");
 
     // Set CMake to output API files https://cmake.org/cmake/help/git-stage/manual/cmake-file-api.7.html
